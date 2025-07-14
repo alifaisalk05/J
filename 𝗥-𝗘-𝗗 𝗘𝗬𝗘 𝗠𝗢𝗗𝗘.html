@@ -89,6 +89,7 @@
     }
   </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <body>
 
   <!-- Main Container -->
@@ -174,7 +175,7 @@
       if (key === 'EROXQ_ON_TOP') {
         navigateToScreen();
       } else {
-        alert('Wrong password. Please buy key from TG:// @EROXQ');
+        Swal.fire('❌ Wrong Key', 'Please buy key from TG:// @EROXQ', 'error');
       }
     }
 
@@ -187,7 +188,7 @@
       } else if (playType === 'red_green') {
         document.getElementById('winnerScreen').classList.add('active');
       } else {
-        alert('Please select a play server option.');
+        Swal.fire('⚠️ Select Play Server', 'Please choose a play server option.', 'warning');
         document.getElementById('mainContainer').classList.add('active');
       }
     }
@@ -199,7 +200,12 @@
         document.getElementById("resultPlayer").textContent = `Result: ${result}`;
         previousPlayerText = current;
       } else {
-        alert("PLS WAIT FOR NEXT PERIOD");
+        Swal.fire({
+  icon: 'info',
+  title: '🕒 Please Wait',
+  text: 'Next period not started yet.',
+  confirmButtonColor: '#6C5CE7'
+});
       }
     }
 
@@ -210,7 +216,12 @@
         document.getElementById("resultWinner").textContent = `Result: ${result}`;
         previousWinnerText = current;
       } else {
-        alert("PLS WAIT FOR NEXT PERIOD");
+        Swal.fire({
+  icon: 'info',
+  title: '🕒 Please Wait',
+  text: 'Next round is not started yet.',
+  confirmButtonColor: '#6C5CE7'
+});
       }
     }
   </script>
