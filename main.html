@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EroxQ Mode</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0f0f, #005f1f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .screen {
+      display: none;
+      width: 350px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid #00ff99;
+      border-radius: 15px;
+      color: #fff;
+      box-shadow: 0 0 15px #00ff99;
+      text-align: center;
+      transition: 0.4s ease;
+    }
+
+    .active {
+      display: block;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: #00ffcc;
+      text-shadow: 0 0 5px #00ffcc;
+    }
+
+    select, input[type="password"] {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      color: #fff;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: linear-gradient(90deg, #00ff99, #00ccff);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px #00ffcc;
+    }
+
+    .premium {
+      background: linear-gradient(135deg, #ffd700, #ff4500);
+      padding: 15px;
+      border-radius: 10px;
+      color: black;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<body>
+
+  <!-- Main Container -->
+  <div class="screen active" id="mainContainer">
+    <h1>𝐄𝐑𝐎𝐗 𝐌𝐎𝐃</h1>
+    <button onclick="selectServer()">SELECT SERVER</button>
+
+    <select id="serverSpinner">
+      <option disabled selected>SELECT SERVER</option>
+      <option>91 CLUB</option>
+      <option>TIRANGA</option>
+      <option>BIG MUMBAI</option>
+      <option>BIG DADDY</option>
+      <option>GOA GAME</option>
+      <option>OK WIN</option>
+      <option>55 CLUB</option>
+      <option>BDG WIN</option>
+      <option>DIUWIN</option>
+      <option>101GAME</option>
+      <option>TP PLAY</option>
+      <option>DAMAN</option>
+      <option>RAJA LUCK</option>
+      <option>KWG GAME</option>
+      <option>51GAME</option>
+    </select>
+
+    <select id="playSpinner">
+      <option disabled selected>SELECT PLAY SERVER</option>
+      <option value="big_small">BIG/SMALL</option>
+      <option value="red_green">RED/GREEN</option>
+    </select>
+
+    <input type="password" id="paidKey" placeholder="ENTER PAID KEY" />
+    <button onclick="validateKey()">VALIDATE</button>
+  </div>
+
+  <!-- Player Screen -->
+  <div class="screen" id="playerScreen">
+    <h1>𝗥-𝗘-𝗗 𝗘𝗬𝗘 𝗠𝗢𝗗𝗘</h1>
+    <div class="premium">
+      <p id="textview1Player">Loading...</p>
+      <p id="textview2Player">00:00</p>
+    </div>
+    <button onclick="checkPlayerResult()">CHECK RESULT</button>
+    <p id="resultPlayer"></p>
+  </div>
+
+  <!-- Winner Screen -->
+  <div class="screen" id="winnerScreen">
+    <h1>𝗥-𝗘-𝗗 𝗘𝗬𝗘 𝗠𝗢𝗗𝗘</h1>
+    <div class="premium">
+      <p id="textview1Winner">Loading...</p>
+      <p id="textview2Winner">00:00</p>
+    </div>
+    <button onclick="checkWinnerResult()">CHECK RESULT</button>
+    <p id="resultWinner"></p>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    let timer = setInterval(updateTimers, 1000);
+    let previousPlayerText = "";
+    let previousWinnerText = "";
+
+    function updateTimers() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 5, 30, 0);
+      const elapsed = Math.floor((now - start) / 1000);
+      const periods = Math.floor(elapsed / 30);
+      const upcoming = periods + 1;
+      const formatted = now.toISOString().split('T')[0].replace(/-/g, '');
+      const periodNumber = "100005" + String(upcoming).padStart(4, '0');
+      const remaining = 30 - (elapsed % 30);
+
+      document.getElementById("textview1Player").textContent = formatted + periodNumber;
+      document.getElementById("textview2Player").textContent = `00:${String(remaining).padStart(2, '0')}`;
+      document.getElementById("textview1Winner").textContent = formatted + periodNumber;
+      document.getElementById("textview2Winner").textContent = `00:${String(remaining).padStart(2, '0')}`;
+    }
+
+    function validateKey() {
+      const key = document.getElementById('paidKey').value;
+      if (key === 'EROXQ_ON_TOP') {
+        navigateToScreen();
+      } else {
+        Swal.fire('❌ Wrong Key', 'Please buy key from TG:// @EROXQ', 'error');
+      }
+    }
+
+    function navigateToScreen() {
+      const playType = document.getElementById('playSpinner').value;
+      document.getElementById('mainContainer').classList.remove('active');
+
+      if (playType === 'big_small') {
+        document.getElementById('playerScreen').classList.add('active');
+      } else if (playType === 'red_green') {
+        document.getElementById('winnerScreen').classList.add('active');
+      } else {
+        Swal.fire('⚠️ Select Play Server', 'Please choose a play server option.', 'warning');
+        document.getElementById('mainContainer').classList.add('active');
+      }
+    }
+
+    function checkPlayerResult() {
+      const current = document.getElementById("textview1Player").textContent;
+      if (current !== previousPlayerText) {
+        const result = Math.random() > 0.5 ? "BIG" : "SMALL";
+        document.getElementById("resultPlayer").textContent = `Result: ${result}`;
+        previousPlayerText = current;
+      } else {
+        Swal.fire({
+  icon: 'info',
+  title: '🕒 Please Wait',
+  text: 'Next period not started yet.',
+  confirmButtonColor: '#6C5CE7'
+});
+      }
+    }
+
+    function checkWinnerResult() {
+      const current = document.getElementById("textview1Winner").textContent;
+      if (current !== previousWinnerText) {
+        const result = Math.random() > 0.5 ? "RED 🟥" : "GREEN 🟩";
+        document.getElementById("resultWinner").textContent = `Result: ${result}`;
+        previousWinnerText = current;
+      } else {
+        Swal.fire({
+  icon: 'info',
+  title: '🕒 Please Wait',
+  text: 'Next round is not started yet.',
+  confirmButtonColor: '#6C5CE7'
+});
+      }
+    }
+  </script>
+</body>
+</html>
